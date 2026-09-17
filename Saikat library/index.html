@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookVerse | Library Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="background-glow glow-one"></div>
+<div class="background-glow glow-two"></div>
+
+<header class="navbar" id="mainNavbar">
+  <div class="brand">
+    <div class="brand-icon">📖</div>
+    <div><h2>BookVerse</h2><span>LIBRARY MANAGEMENT</span></div>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#discover">Discover</a>
+    <button class="nav-login" type="button" onclick="openLogin()">Sign In</button>
+  </nav>
+</header>
+
+<main id="landingPage">
+  <section class="hero" id="home">
+    <div class="hero-content">
+    <div class="eyebrow"><span class="status-dot"></span>YOUR DIGITAL LIBRARY</div>
+    <h1>Welcome to the <span>Galaxy of Library</span></h1>
+    <p>Discover comics, science, programming and novels — all in one place. Search, explore, issue and return with ease.</p>
+      <div class="hero-buttons">
+        <button class="primary-button" type="button" onclick="openLogin()">Explore the Library <span>→</span></button>
+        <button class="secondary-button" type="button" onclick="scrollToDiscover()">Discover More</button>
+      </div>
+      <div class="hero-stats">
+      <div><strong>40+</strong><span>Books</span></div>
+      <div><strong>4</strong><span>Sections</span></div>
+      <div><strong>24/7</strong><span>Access</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="floating-book book-one">📕</div>
+      <div class="floating-book book-two">📘</div>
+      <div class="floating-book book-three">📗</div>
+      <div class="library-core">
+        <div class="core-icon">📚</div>
+        <span>EXPLORE</span>
+        <strong>NEW WORLDS</strong>
+      </div>
+    </div>
+  </section>
+
+  <section class="discover-section" id="discover">
+    <div class="section-heading">
+      <span>EXPLORE</span>
+      <h2>Four worlds of knowledge.</h2>
+      <p>Each section groups books by what they actually are, so finding the right one takes seconds.</p>
+    </div>
+    <div class="category-grid">
+      <div class="category-card"><div class="category-icon">🦸</div><h3>Comics</h3><p>Marvel &amp; DC universes.</p></div>
+      <div class="category-card"><div class="category-icon">🔬</div><h3>Science</h3><p>Physics, Chemistry, Mathematics.</p></div>
+      <div class="category-card"><div class="category-icon">💻</div><h3>Programming</h3><p>Python, Java, JavaScript, C/C++.</p></div>
+      <div class="category-card"><div class="category-icon">📖</div><h3>Novels</h3><p>Fiction &amp; timeless classics.</p></div>
+    </div>
+  </section>
+</main>
+
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="login-modal">
+    <button class="close-button" type="button" onclick="closeLogin()">×</button>
+
+    <div id="roleChoiceView">
+      <div class="modal-icon">📚</div>
+      <span class="modal-label">WELCOME BACK</span>
+      <h2>Enter the Library</h2>
+      <p>Choose how you'd like to sign in.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;">
+        <button type="button" onclick="showLoginView('admin')" style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:14px;border:1px solid var(--border);background:var(--panel-light);color:inherit;cursor:pointer;text-align:left;">
+          <span style="font-size:26px;">🛡️</span>
+          <span><strong style="display:block;font-size:16px;">Admin Login</strong><small style="opacity:0.7;">Manage books &amp; students</small></span>
+        </button>
+        <button type="button" onclick="showLoginView('student')" style="display:flex;align-items:center;gap:14px;padding:16px;border-radius:14px;border:1px solid var(--border);background:var(--panel-light);color:inherit;cursor:pointer;text-align:left;">
+          <span style="font-size:26px;">🎓</span>
+          <span><strong style="display:block;font-size:16px;">Student Login</strong><small style="opacity:0.7;">Browse &amp; issue books</small></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="adminLoginView" style="display:none;">
+      <button type="button" onclick="showRoleChoice()" style="background:none;border:none;color:inherit;opacity:0.7;cursor:pointer;margin-bottom:10px;">← Back</button>
+      <div class="modal-icon">🛡️</div>
+      <span class="modal-label">ADMIN ACCESS</span>
+      <h2>Admin Login</h2>
+      <p>Sign in to manage the library.</p>
+      <form id="adminLoginForm" onsubmit="handleAdminLogin(event)">
+        <label for="adminUsername">Username</label>
+        <input type="text" id="adminUsername" placeholder="Enter admin username" autocomplete="username">
+        <label for="adminPassword">Password</label>
+        <div class="password-field">
+          <input type="password" id="adminPassword" placeholder="Enter your password" autocomplete="current-password">
+          <button type="button" onclick="togglePassword('adminPassword', this)">Show</button>
+        </div>
+        <p id="adminErrorMsg"></p>
+        <button class="login-submit" type="submit">Sign In <span>→</span></button>
+      </form>
+      <div class="demo-info"><strong>Demo Account</strong><span>Admin: admin / 1234</span></div>
+    </div>
+
+    <div id="studentLoginView" style="display:none;">
+      <button type="button" onclick="showRoleChoice()" style="background:none;border:none;color:inherit;opacity:0.7;cursor:pointer;margin-bottom:10px;">← Back</button>
+      <div class="modal-icon">🎓</div>
+      <span class="modal-label">STUDENT ACCESS</span>
+      <h2>Student Login</h2>
+      <p>Sign in to explore and borrow books.</p>
+      <form id="studentLoginForm" onsubmit="handleStudentLogin(event)">
+        <label for="studentUsername">Username</label>
+        <input type="text" id="studentUsername" placeholder="Enter your username" autocomplete="username">
+        <label for="studentPassword">Password</label>
+        <div class="password-field">
+          <input type="password" id="studentPassword" placeholder="Enter your password" autocomplete="current-password">
+          <button type="button" onclick="togglePassword('studentPassword', this)">Show</button>
+        </div>
+        <p id="studentErrorMsg"></p>
+        <button class="login-submit" type="submit">Sign In <span>→</span></button>
+      </form>
+      <p style="margin-top:16px;text-align:center;font-size:14px;">
+        New student? <a href="#" onclick="showRegisterView(event)" style="color:inherit;text-decoration:underline;">Create an account</a>
+      </p>
+    </div>
+
+    <div id="registerView" style="display:none;">
+      <button type="button" onclick="showLoginView('student')" style="background:none;border:none;color:inherit;opacity:0.7;cursor:pointer;margin-bottom:10px;">← Back</button>
+      <div class="modal-icon">📝</div>
+      <span class="modal-label">NEW STUDENT</span>
+      <h2>Create Account</h2>
+      <p>Register to start borrowing books.</p>
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <label for="regName">Full Name</label>
+        <input type="text" id="regName" placeholder="Enter your full name">
+        <label for="regUsername">Username</label>
+        <input type="text" id="regUsername" placeholder="Choose a username">
+        <label for="regPassword">Password</label>
+        <input type="password" id="regPassword" placeholder="Choose a password">
+        <p id="registerErrorMsg"></p>
+        <button class="login-submit" type="submit">Create Account <span>→</span></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- STUDENT DASHBOARD -->
+<section class="app-dashboard" id="studentDashboard">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">📖</div>
+      <div><h2>BookVerse</h2><span>STUDENT PORTAL</span></div>
+    </div>
+    <div class="sidebar-menu">
+      <button class="side-link active" onclick="showStudentSection('studentOverview', this)"><span>⌂</span>Overview</button>
+      <button class="side-link" onclick="showStudentSection('studentBooks', this)"><span>📚</span>Browse Books</button>
+      <button class="side-link" onclick="showStudentSection('myBooks', this)"><span>📖</span>My Books</button>
+      <button class="side-link" onclick="showStudentSection('myReservations', this)"><span>⏳</span>My Reservations</button>
+      <button class="side-link" onclick="showStudentSection('studentPayments', this)"><span>💳</span>Fine Payments</button>
+      <button class="side-link" onclick="showStudentSection('studentBookRequests', this)"><span>📝</span>Request a Book</button>
+      <button class="side-link" onclick="showStudentSection('studentProfile', this)"><span>👤</span>Profile</button>
+    </div>
+    <button class="sidebar-logout" onclick="handleLogout()">↪ Logout</button>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="mobile-dashboard-header">
+      <div class="brand"><div class="brand-icon">📖</div><div><h2>BookVerse</h2></div></div>
+      <button onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div class="dashboard-section active-section" id="studentOverview">
+      <div class="dashboard-heading">
+        <div>
+          <span class="dashboard-label">STUDENT DASHBOARD</span>
+          <h1 id="studentWelcome">Welcome back!</h1>
+          <p>Continue your reading journey and discover something new.</p>
+        </div>
+      </div>
+      <div class="dashboard-cards">
+        <div class="dashboard-card"><span class="dashboard-card-icon">📚</span><div><strong id="studentTotalBooks">0</strong><span>Total Books</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">📖</span><div><strong id="studentBorrowedBooks">0</strong><span>Currently Issued</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">⏳</span><div><strong id="studentReservedBooks">0</strong><span>Reservations</span></div></div>
+      </div>
+      <div class="student-overdue-alert" id="studentOverdueAlert"></div>
+      <div class="dashboard-panel library-rules-panel">
+        <div class="panel-heading"><div><span class="dashboard-label">PLEASE READ</span><h2>Library Rules &amp; Guide</h2></div></div>
+        <p class="library-rules-intro">These simple rules keep books available and fair for every student.</p>
+        <div class="library-rules-grid">
+          <div class="library-rule"><span>1</span><div><strong>Borrow up to <b id="ruleBorrowLimit">5</b> books</strong><p>Each physical copy counts separately. You may issue multiple copies of one title if copies are available.</p></div></div>
+          <div class="library-rule"><span>2</span><div><strong>Free for <b id="ruleLoanDays">15</b> days</strong><p>Return within the due date to pay nothing. A fine starts only after the free period ends.</p></div></div>
+          <div class="library-rule"><span>3</span><div><strong>Renew once for <b id="ruleRenewalDays">7</b> extra days</strong><p>Renewal is not allowed after the due date or when another student is waiting for the book.</p></div></div>
+          <div class="library-rule"><span>4</span><div><strong>Reserve unavailable books</strong><p>When all copies are issued, join the queue. The first student in the queue gets priority.</p></div></div>
+          <div class="library-rule"><span>5</span><div><strong>Overdue fine: ₹<b id="ruleFineAmount">2</b> per day</strong><p>Return the book first; any overdue fine can then be collected by the library.</p></div></div>
+          <div class="library-rule"><span>6</span><div><strong>Return the correct copy</strong><p>My Books shows every issued copy separately, so return or renew the exact book record you selected.</p></div></div>
+        </div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dashboard-panel">
+          <div class="panel-heading">
+            <div><span class="dashboard-label">RECOMMENDED</span><h2>Books for You</h2></div>
+            <button onclick="showStudentSection('studentBooks')">View All</button>
+          </div>
+          <div class="mini-book-grid" id="recommendedBooks"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-section" id="studentBooks">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">COLLECTION</span><h1>Browse Books</h1><p>Find your next book from the BookVerse collection.</p></div>
+      </div>
+      <div class="book-search-bar"><span>⌕</span><input type="text" id="studentSearch" placeholder="Search by title, author, category..." oninput="renderStudentBooks()"></div>
+      <div class="large-book-grid" id="studentBookGrid"></div>
+    </div>
+
+    <div class="dashboard-section" id="myBooks">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">YOUR COLLECTION</span><h1>My Books</h1><p>Keep track of books currently borrowed by you.</p></div>
+      </div>
+      <div class="borrowed-list" id="myBooksList"></div>
+    </div>
+
+    <div class="dashboard-section" id="myReservations">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">WAITING LIST</span><h1>My Reservations</h1><p>Track unavailable books you are waiting to issue.</p></div>
+      </div>
+      <div class="borrowed-list" id="myReservationsList"></div>
+    </div>
+
+    <div class="dashboard-section" id="studentPayments">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">FINE PAYMENT</span><h1>Payments &amp; Receipts</h1><p>Books are free for 15 days. Pay only if a returned book has an overdue fine.</p></div>
+      </div>
+      <div class="request-help"><strong>How payment works:</strong> choose Cash or UPI, send a payment request, then the librarian verifies it. A receipt number is generated only after confirmation.</div>
+      <div class="book-request-list payment-list" id="studentPaymentsList"></div>
+    </div>
+
+    <div class="dashboard-section" id="studentBookRequests">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">CATALOGUE REQUEST</span><h1>Request a Book</h1><p>Cannot find a title in Browse Books? Send a request to the librarian.</p></div>
+      </div>
+      <div class="request-help"><strong>Already in BookVerse?</strong> Use Browse Books. If every copy is issued, use Reservation instead of a new request.</div>
+      <form class="book-request-form" onsubmit="submitBookRequest(event)">
+        <div class="profile-form-grid">
+          <label>Book Title<input id="requestBookTitle" type="text" maxlength="200" placeholder="e.g. Atomic Habits" required></label>
+          <label>Author <span class="optional-label">(optional)</span><input id="requestBookAuthor" type="text" maxlength="200" placeholder="e.g. James Clear"></label>
+          <label>Suggested Category<select id="requestBookCategory"><option value="Other">Other / Not sure</option><option value="Comics">Comics</option><option value="Science">Science</option><option value="Programming">Programming</option><option value="Novels">Novels</option></select></label>
+          <label>Why do you need it? <span class="optional-label">(optional)</span><input id="requestBookReason" type="text" maxlength="500" placeholder="e.g. Needed for my course project"></label>
+        </div>
+        <button type="submit" class="primary-button small-primary">Submit Request</button>
+      </form>
+      <div class="dashboard-panel request-history-panel">
+        <div class="panel-heading"><div><span class="dashboard-label">YOUR REQUESTS</span><h2>Request Status</h2></div></div>
+        <div class="book-request-list" id="studentBookRequestsList"></div>
+      </div>
+    </div>
+
+    <div class="dashboard-section" id="studentProfile">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">ACCOUNT</span><h1>My Profile</h1><p>View your library account information.</p></div>
+      </div>
+      <div class="profile-card">
+        <div class="profile-avatar">👤</div>
+        <div class="profile-details">
+          <span>FULL NAME</span><h2 id="profileName">Student</h2>
+          <span>USERNAME</span><p id="profileUsername">student</p>
+          <span>ROLL NUMBER</span><p id="profileRollNumber">Not added</p>
+          <span>ACCOUNT TYPE</span><p>Student</p>
+        </div>
+      </div>
+      <form class="profile-form" onsubmit="handleProfileUpdate(event)">
+        <div class="profile-form-heading"><span class="dashboard-label">UPDATE DETAILS</span><h2>Academic Information</h2></div>
+        <div class="profile-form-grid">
+          <label>Full Name<input id="profileFullName" type="text" maxlength="80" required></label>
+          <label>Roll Number<input id="profileRollInput" type="text" placeholder="UG/SOET/30/24/340" pattern="[A-Za-z]{2,10}/[A-Za-z]{2,20}/[0-9]{1,4}/[0-9]{2,4}/[0-9]{1,6}" title="Use format UG/SOET/30/24/340" required></label>
+          <label>Phone Number<input id="profilePhone" type="tel" maxlength="20" placeholder="9876543210" required></label>
+          <label>Course / Department<input id="profileCourse" type="text" maxlength="100" placeholder="B.Tech CSE" required></label>
+          <label>Semester<input id="profileSemester" type="number" min="1" max="12" required></label>
+        </div>
+        <button type="submit" class="primary-button small-primary">Save Profile</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+
+<!-- ADMIN DASHBOARD -->
+<section class="app-dashboard" id="adminDashboard">
+  <aside class="sidebar admin-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">📖</div>
+      <div><h2>BookVerse</h2><span>ADMIN PORTAL</span></div>
+    </div>
+    <div class="sidebar-menu">
+      <button class="side-link active" onclick="showAdminSection('adminOverview', this)"><span>⌂</span>Overview</button>
+      <button class="side-link" onclick="showAdminSection('manageBooks', this)"><span>📚</span>Manage Books</button>
+      <button class="side-link" onclick="showAdminSection('manageStudents', this)"><span>👥</span>Students</button>
+      <button class="side-link" onclick="showAdminSection('manageBookRequests', this)"><span>📝</span>Book Requests</button>
+      <button class="side-link" onclick="showAdminSection('loanHistory', this)"><span>🧾</span>Loan History</button>
+    </div>
+    <button class="sidebar-logout" onclick="handleLogout()">↪ Logout</button>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="mobile-dashboard-header">
+      <div class="brand"><div class="brand-icon">📖</div><div><h2>BookVerse</h2></div></div>
+      <button onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div class="dashboard-section active-section" id="adminOverview">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">ADMIN DASHBOARD</span><h1>Welcome, Admin</h1><p>Manage your library collection and student activity.</p></div>
+        <button class="primary-button small-primary" onclick="showAdminSection('manageBooks')">+ Add New Book</button>
+      </div>
+      <div class="dashboard-cards">
+        <div class="dashboard-card"><span class="dashboard-card-icon">📚</span><div><strong id="adminTotalBooks">0</strong><span>Total Books</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">📖</span><div><strong id="adminAvailableBooks">0</strong><span>Available</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">⏳</span><div><strong id="adminIssuedBooks">0</strong><span>Issued</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">⚠️</span><div><strong id="adminOverdueBooks">0</strong><span>Overdue</span></div></div>
+      </div>
+      <div class="dashboard-grid admin-alert-grid">
+        <div class="dashboard-panel">
+          <div class="panel-heading"><div><span class="dashboard-label">ACTION NEEDED</span><h2>Overdue Student Alerts</h2></div><span class="panel-total" id="adminOverdueStudentCount">0 overdue</span></div>
+          <div class="admin-book-list" id="adminOverdueAlertsList"></div>
+        </div>
+        <div class="dashboard-panel">
+          <div class="panel-heading"><div><span class="dashboard-label">FINE COLLECTION</span><h2>Recent Payments</h2></div><span class="panel-total" id="adminFineCollectedTotal">₹0</span></div>
+          <div class="admin-book-list" id="adminFineCollectionsList"></div>
+        </div>
+      </div>
+      <div class="dashboard-panel">
+        <div class="panel-heading">
+          <div><span class="dashboard-label">COLLECTION</span><h2>Recently Added Books</h2></div>
+          <button onclick="showAdminSection('manageBooks')">Manage Books</button>
+        </div>
+        <div class="admin-book-list" id="recentBooks"></div>
+      </div>
+      <div class="dashboard-panel">
+        <div class="panel-heading"><div><span class="dashboard-label">TRACKING</span><h2>Currently Issued Books</h2></div></div>
+        <div class="admin-book-list" id="issuedBooksList"></div>
+      </div>
+      <div class="dashboard-panel">
+        <div class="panel-heading"><div><span class="dashboard-label">WAITING LIST</span><h2>Reservation Queue</h2></div></div>
+        <div class="admin-book-list" id="reservationQueueList"></div>
+      </div>
+      <div class="dashboard-panel">
+        <div class="panel-heading"><div><span class="dashboard-label">LIVE UPDATES</span><h2>Recent Activity</h2></div></div>
+        <div id="recentActivityList"></div>
+      </div>
+    </div>
+
+    <div class="dashboard-section" id="manageBooks">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">ADMINISTRATION</span><h1>Manage Books</h1><p>Add, issue, return or remove books from the collection.</p></div>
+        <div class="dashboard-heading-actions">
+          <button class="secondary-button small-secondary" type="button" id="importCatalogueButton" onclick="importCatalogueBooks()">↓ Import Real Books</button>
+          <button class="primary-button small-primary" type="button" onclick="openAddBookModal()">+ Add Book</button>
+        </div>
+      </div>
+      <div class="book-search-bar"><span>⌕</span><input type="text" id="adminSearch" placeholder="Search books..." oninput="renderAdminBooks()"></div>
+      <div class="admin-table-wrapper">
+        <table class="admin-table">
+          <thead><tr><th>BOOK</th><th>AUTHOR</th><th>CATEGORY</th><th>PRICE</th><th>STATUS</th><th>ACTIONS</th></tr></thead>
+          <tbody id="adminBookTable"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dashboard-section" id="manageStudents">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">USERS</span><h1>Students</h1><p>View registered students, library activity and pending payment confirmations.</p></div>
+      </div>
+      <div class="request-help" id="pendingFinePaymentsSummary">Loading payment confirmations...</div>
+      <div class="book-search-bar"><span>⌕</span><input type="text" id="studentAdminSearch" placeholder="Search students by name or username..." oninput="renderStudents()"></div>
+      <div class="student-list"></div>
+    </div>
+
+    <div class="dashboard-section" id="manageBookRequests">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">STUDENT DEMAND</span><h1>Book Requests</h1><p>Review titles requested by students that are not in the current catalogue.</p></div>
+      </div>
+      <div class="request-help"><strong>Approved request:</strong> Add the acquired title from Manage Books when it becomes available. Rejected requests need a short reason for the student.</div>
+      <div class="book-request-list admin-request-list" id="adminBookRequestsList"></div>
+    </div>
+
+    <div class="dashboard-section" id="loanHistory">
+      <div class="dashboard-heading">
+        <div><span class="dashboard-label">LIBRARY RECORDS</span><h1>Loan History</h1><p>Track transactions, overdue fines and fine payments.</p></div>
+      </div>
+      <div class="dashboard-cards">
+        <div class="dashboard-card"><span class="dashboard-card-icon">🧾</span><div><strong id="reportTransactions">0</strong><span>Total Transactions</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">📖</span><div><strong id="reportActiveLoans">0</strong><span>Active Loans</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">✅</span><div><strong id="reportReturnedBooks">0</strong><span>Returned</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">⚠️</span><div><strong id="reportOverdueBooks">0</strong><span>Overdue</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">💰</span><div><strong id="reportFineCollected">₹0</strong><span>Fine Collected</span></div></div>
+        <div class="dashboard-card"><span class="dashboard-card-icon">⏳</span><div><strong id="reportPendingFine">₹0</strong><span>Pending Fine</span></div></div>
+      </div>
+      <div class="dashboard-grid">
+        <div class="dashboard-panel">
+          <div class="panel-heading"><div><span class="dashboard-label">TRANSACTIONS</span><h2>All Borrowings</h2></div><button type="button" onclick="exportLoanHistoryCSV()">↓ Download CSV</button></div>
+          <div class="book-search-bar compact-search"><span>⌕</span><input type="text" id="historySearch" placeholder="Search book or student..." oninput="renderLoanHistory()"></div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead><tr><th>BOOK</th><th>STUDENT</th><th>ISSUED</th><th>DUE DATE</th><th>STATUS</th><th>FINE</th><th>PAYMENT</th><th>ACTION</th></tr></thead>
+              <tbody id="loanHistoryTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="dashboard-panel">
+          <div class="panel-heading"><div><span class="dashboard-label">INSIGHT</span><h2>Most Issued</h2></div></div>
+          <div class="admin-book-list" id="popularBooksList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ADD BOOK MODAL -->
+<div class="modal-overlay" id="addBookModal">
+  <div class="login-modal">
+    <button class="close-button" type="button" onclick="closeAddBookModal()">×</button>
+    <div class="modal-icon">📚</div>
+    <span class="modal-label">ADMINISTRATION</span>
+    <h2>Add New Book</h2>
+    <p>Add a new book to the library collection.</p>
+    <form onsubmit="addNewBook(event)">
+      <label for="bookTitle">Book Title</label>
+      <input type="text" id="bookTitle" placeholder="Enter book title">
+      <label for="bookAuthor">Author</label>
+      <input type="text" id="bookAuthor" placeholder="Enter author name">
+      <label for="bookCategory">Category</label>
+      <select id="bookCategory" onchange="updateSubcategoryOptions()">
+        <option value="Comics">Comics</option>
+        <option value="Science">Science</option>
+        <option value="Programming">Programming</option>
+        <option value="Novels">Novels</option>
+      </select>
+      <label for="bookSubcategory">Subcategory</label>
+      <select id="bookSubcategory"></select>
+      <label for="bookPrice">Price (₹)</label>
+      <input type="number" id="bookPrice" placeholder="Enter price" min="0" step="1">
+      <label for="bookCopies">Total Copies</label>
+      <input type="number" id="bookCopies" value="3" min="1" max="50" step="1">
+      <label for="bookIsbn">ISBN / Accession No. <small>(optional)</small></label>
+      <input type="text" id="bookIsbn" placeholder="e.g. 978-0-123456-78-9">
+      <label for="bookPublisher">Publisher <small>(optional)</small></label>
+      <input type="text" id="bookPublisher" placeholder="Enter publisher name">
+      <label for="bookYear">Publication Year <small>(optional)</small></label>
+      <input type="number" id="bookYear" placeholder="e.g. 2024" min="1000" max="2030">
+      <label for="bookShelf">Shelf / Rack Location <small>(optional)</small></label>
+      <input type="text" id="bookShelf" placeholder="e.g. P-04">
+      <button class="login-submit" type="submit">Add Book <span>→</span></button>
+    </form>
+  </div>
+</div>
+
+
+<!-- EDIT BOOK MODAL -->
+<div class="modal-overlay" id="editBookModal">
+  <div class="login-modal">
+    <button class="close-button" type="button" onclick="closeEditBookModal()">×</button>
+    <div class="modal-icon">✏️</div>
+    <span class="modal-label">ADMINISTRATION</span>
+    <h2>Edit Book</h2>
+    <p>Update the selected book's information.</p>
+    <form onsubmit="saveBookChanges(event)">
+      <label for="editBookTitle">Book Title</label>
+      <input type="text" id="editBookTitle" placeholder="Enter book title">
+      <label for="editBookAuthor">Author</label>
+      <input type="text" id="editBookAuthor" placeholder="Enter author name">
+      <label for="editBookCategory">Category</label>
+      <select id="editBookCategory" onchange="updateEditSubcategoryOptions()">
+        <option value="Comics">Comics</option>
+        <option value="Science">Science</option>
+        <option value="Programming">Programming</option>
+        <option value="Novels">Novels</option>
+      </select>
+      <label for="editBookSubcategory">Subcategory</label>
+      <select id="editBookSubcategory"></select>
+      <label for="editBookPrice">Price (₹)</label>
+      <input type="number" id="editBookPrice" placeholder="Enter price" min="0" step="1">
+      <label for="editBookCopies">Total Copies</label>
+      <input type="number" id="editBookCopies" min="1" max="50" step="1">
+      <label for="editBookIsbn">ISBN / Accession No. <small>(optional)</small></label>
+      <input type="text" id="editBookIsbn" placeholder="e.g. 978-0-123456-78-9">
+      <label for="editBookPublisher">Publisher <small>(optional)</small></label>
+      <input type="text" id="editBookPublisher" placeholder="Enter publisher name">
+      <label for="editBookYear">Publication Year <small>(optional)</small></label>
+      <input type="number" id="editBookYear" placeholder="e.g. 2024" min="1000" max="2030">
+      <label for="editBookShelf">Shelf / Rack Location <small>(optional)</small></label>
+      <input type="text" id="editBookShelf" placeholder="e.g. P-04">
+      <button class="login-submit" type="submit">Save Changes <span>→</span></button>
+    </form>
+  </div>
+</div>
+
+
+<!-- STUDENT BORROWINGS MODAL -->
+<div class="modal-overlay" id="studentBorrowingsModal">
+  <div class="login-modal" style="max-width: 600px;">
+    <button class="close-button" type="button" onclick="closeStudentBorrowingsModal()">×</button>
+    <div class="modal-icon">📚</div>
+    <span class="modal-label">STUDENT RECORDS</span>
+    <h2 id="studentBorrowingsName">Student Name</h2>
+    <p>Complete borrowing history for this student.</p>
+    <div class="dashboard-cards" style="margin-bottom: 16px;">
+      <div class="dashboard-card"><span class="dashboard-card-icon">📖</span><div><strong id="studentTotalBorrowings">0</strong><span>Total Borrowings</span></div></div>
+      <div class="dashboard-card"><span class="dashboard-card-icon">⏳</span><div><strong id="studentActiveBorrowings">0</strong><span>Currently Issued</span></div></div>
+      <div class="dashboard-card"><span class="dashboard-card-icon">💰</span><div><strong id="studentTotalFines">₹0</strong><span>Total Fines</span></div></div>
+    </div>
+    <div id="studentBorrowingsList" style="max-height: 400px; overflow-y: auto;"></div>
+  </div>
+</div>
+
+
+<!-- STUDENT FINE PAYMENT CONFIRMATION MODAL -->
+<div class="modal-overlay" id="studentPaymentsModal">
+  <div class="login-modal" style="max-width: 640px;">
+    <button class="close-button" type="button" onclick="closeStudentPaymentsModal()">×</button>
+    <div class="modal-icon">💳</div>
+    <span class="modal-label">PAYMENT CONFIRMATION</span>
+    <h2 id="studentPaymentsName">Student Payments</h2>
+    <p>Confirm only after receiving the selected Cash or UPI payment from the student.</p>
+    <div id="studentPaymentsAdminList" class="admin-payment-list"></div>
+  </div>
+</div>
+
+
+<!-- EDIT STUDENT MODAL -->
+<div class="modal-overlay" id="editStudentModal">
+  <div class="login-modal">
+    <button class="close-button" type="button" onclick="closeEditStudentModal()">×</button>
+    <div class="modal-icon">👤</div>
+    <span class="modal-label">ADMINISTRATION</span>
+    <h2>Edit Student</h2>
+    <p>Update student academic information.</p>
+    <form onsubmit="saveStudentChanges(event)">
+      <label for="editStudentRoll">Roll Number</label>
+      <input type="text" id="editStudentRoll" placeholder="Enter roll number">
+      <label for="editStudentPhone">Phone Number</label>
+      <input type="text" id="editStudentPhone" placeholder="Enter phone number">
+      <label for="editStudentCourse">Course</label>
+      <input type="text" id="editStudentCourse" placeholder="Enter course">
+      <label for="editStudentSemester">Semester</label>
+      <input type="number" id="editStudentSemester" placeholder="Enter semester" min="1" max="10">
+      <button class="login-submit" type="submit">Save Changes <span>→</span></button>
+    </form>
+  </div>
+</div>
+
+
+<!-- STUDENT SELECTION MODAL -->
+<div class="modal-overlay" id="studentSelectModal">
+  <div class="login-modal" style="max-width: 500px;">
+    <button class="close-button" type="button" onclick="closeStudentSelectModal()">×</button>
+    <div class="modal-icon">👥</div>
+    <span class="modal-label">ADMINISTRATION</span>
+    <h2 id="studentSelectBookTitle">Issue Book</h2>
+    <p id="studentSelectBookSubtitle">Select a student to issue this book.</p>
+    <div id="studentSelectList" style="max-height: 300px; overflow-y: auto; margin-bottom: 16px;"></div>
+    <button class="login-submit" type="button" onclick="confirmStudentSelection()" id="studentSelectConfirmBtn" disabled>Confirm Issue <span>→</span></button>
+  </div>
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+<footer class="footer" id="mainFooter">
+  <p>© 2026 BookVerse Library Management System</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
